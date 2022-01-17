@@ -1,3 +1,4 @@
+// TODO: find a way to import, currently it causes issues
 export const lngTranslateContext: string[] = [
   'English',
   'Arabic',

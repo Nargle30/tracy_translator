@@ -7,11 +7,7 @@ const Reverso = require('reverso-api');
 const reverso = new Reverso();
 
 
-interface IArgs {
-  message: InteractiveMessage,
-  say: () => void
-}
-
+// TODO: add more actions
 enum TActionType {
   'Translate',
 }
@@ -58,8 +54,10 @@ app.message(/^(hi|Hi|hello|Hello|hey|Hey).*/, async ({context, say}) => {
   await say(`${greeting}${dialogs.help}`);
 });
 
+/*
 app.event('app_home_opened', async ({event, say}) => {
   // send random word
   // await say('Oh hello there!')
 });
+*/
 
