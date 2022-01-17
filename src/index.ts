@@ -1,15 +1,8 @@
-console.log('Hello world!');
-// run npm run start:dev to start dev
-// more info: https://khalilstemmler.com/blogs/typescript/node-starter-project/
-
-// const Reverso = require('reverso-api')
-
 import dotenv from 'dotenv'
-import {App, BotMessageEvent, SlackActionMiddlewareArgs, InteractiveMessage, Middleware} from '@slack/bolt'
-
-const Reverso = require('reverso-api');
+import {App, BotMessageEvent, InteractiveMessage} from '@slack/bolt'
 import {parseTranslateRequest, IParsedRequest} from './helpers'
 import dialogs from './dialogs.json'
+const Reverso = require('reverso-api');
 
 const reverso = new Reverso();
 
@@ -17,6 +10,10 @@ const reverso = new Reverso();
 interface IArgs {
   message: InteractiveMessage,
   say: () => void
+}
+
+enum TActionType {
+  'Translate',
 }
 
 dotenv.config();
@@ -38,19 +35,19 @@ app.message(async ({message, say}) => {
   const botMessage = (message as BotMessageEvent);
   console.log('message = ', message);
 
-
   if (botMessage.text) {
     const res: IParsedRequest = parseTranslateRequest(botMessage.text)
     console.log('res = ', res)
+    res.phrase && reverso.getContext(res.phrase, res.fromLanguage || 'English', res.intoLanguage || "German", (response: any) => {
+      console.log('response = ', response);
 
+      say(`*Here is what i have found:*\n${response.translation.map((i: string) => {
+        return `${i}\n`
+      }).join('')}`)
+    }).catch((err: any) => {
+      console.error(err);
+    });
   }
-// phrase can be empty - add something funnu for this situation
-  /* reverso.getContext('meet me half way', 'English', 'Russian', (response: any) => {
-     console.log('response = ', response);
-   }).catch((err: any) => {
-     console.error(err);
-   });
- */
 });
 
 

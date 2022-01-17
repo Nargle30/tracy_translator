@@ -1,4 +1,4 @@
-export const lngTranslateContext = [
+export const lngTranslateContext: string[] = [
   'English',
   'Arabic',
   'German',
@@ -16,7 +16,7 @@ export const lngTranslateContext = [
   'Chinese',
 ]
 
-export const lngSynonymse = [
+export const lngSynonymse: string[] = [
   'English',
   'Russian',
   'German',
@@ -26,7 +26,7 @@ export const lngSynonymse = [
   'Polish',
 ]
 
-export const lngSpellCheck = [
+export const lngSpellCheck: string[] = [
   'English',
   'French',
 ]

@@ -1,8 +1,26 @@
+export const lngTranslateContext: string[] = [
+  'English',
+  'Arabic',
+  'German',
+  'Spanish',
+  'French',
+  'Hebrew',
+  'Italian',
+  'Japanese',
+  'Dutch',
+  'Polish',
+  'Portuguese',
+  'Romanian',
+  'Russian',
+  'Turkish',
+  'Chinese',
+]
+
 export interface IParsedRequest {
   request: string,
   phrase: string,
-  from: string,
-  into: string
+  fromLanguage: string,
+  intoLanguage: string
 }
 
 
@@ -24,8 +42,13 @@ function findIndex(myArray: string[], smallArray: string[]) {
   return value > -1 && value
 }
 
-function findLanguage(myArray: string[], langages: string[]) {
-
+function findLng(myArray: string [], preposition: string) {
+  let value: any = ''
+  if (lngTranslateContext.includes(myArray[myArray.indexOf(preposition) + 1])) {
+    value = myArray[myArray.indexOf(preposition) + 1]
+    console.log('value = ', value)
+  }
+  return value
 }
 
 export function parseTranslateRequest(text: string) {
@@ -35,23 +58,18 @@ export function parseTranslateRequest(text: string) {
 
   const myArray: string[] = text.split(' ');
   const arr = ['translate', 'Translate'];
+  console.log('myArray = ', myArray)
 
   if (contains(text, arr)) {
     const indexOfTranslate = findIndex(myArray, arr);
-
-    if (contains(text, ['from']) && myArray.indexOf('from') === indexOfTranslate + 2) {
-
-      fromLanguage = myArray[indexOfTranslate + 2]
-      intoLanguage = myArray[indexOfTranslate + 4]
-      phrase = myArray.slice(indexOfTranslate+1, myArray.indexOf('from')).join(' ')
-    }
+    fromLanguage = findLng(myArray, 'from')
+    intoLanguage = findLng(myArray, 'into')
+    phrase = myArray.slice(myArray.indexOf('(') + 1, myArray.indexOf(')')).join(' ')
   }
-
-
   return {
     request: "Translate",
     phrase: phrase,
-    from: fromLanguage,
-    into: intoLanguage,
+    fromLanguage: fromLanguage,
+    intoLanguage: intoLanguage,
   }
 }
